@@ -1,0 +1,83 @@
+[project]
+name = "talktype"
+version = "0.1.0"
+description = "Ditado local push-to-talk para Windows (PT-BR)"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "faster-whisper>=1.2.1,<2",
+    # Not imported: faster-whisper runs on it. faster-whisper accepts any 4.x, but only
+    # 4.5+ is built for CUDA 12 with cuDNN 9, which the gpu group installs.
+    "ctranslate2>=4.8,<5",
+    "onnx-asr[hub]>=0.12,<1",
+    "sounddevice>=0.5",
+    "numpy>=2",
+    # QtCore, QtGui, QtWidgets and QtSvg only. The PySide6 meta package would add the Addons
+    # (about 430 MB installed).
+    "PySide6-Essentials>=6.11,<7",
+    "pydantic>=2.11,<3",
+    "tomlkit>=0.13",
+    "httpx>=0.28",
+    "nvidia-ml-py>=13",
+    "huggingface-hub>=0.34",
+]
+
+[project.scripts]
+talktype = "talktype.__main__:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=9",
+    "pytest-qt>=4.5",
+    "ruff>=0.16",
+    "pyright>=1.1.414",
+]
+# The CUDA 12 runtime for faster-whisper (about 2 GB). scripts/setup.ps1 installs it only
+# on machines with an NVIDIA GPU; without it, the app runs on the CPU.
+gpu = [
+    "nvidia-cublas-cu12>=12.9,<13",
+    "nvidia-cudnn-cu12>=9,<10",
+]
+
+[tool.uv]
+default-groups = ["dev", "gpu"]
+
+[build-system]
+requires = ["uv_build>=0.11,<0.12"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF", "N", "C4", "PTH"]
+# os.replace is the documented atomic-write primitive.
+ignore = ["RUF001", "RUF002", "RUF003", "PTH105"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/talktype/win32.py" = ["N801", "N802", "N803", "N806", "N815", "N816"]
+
+[tool.pyright]
+include = ["src", "tests"]
+pythonVersion = "3.12"
+pythonPlatform = "Windows"
+typeCheckingMode = "standard"
+venvPath = "."
+venv = ".venv"
+
+[tool.pytest.ini_options]
+minversion = "9.0"
+testpaths = ["tests"]
+addopts = ["-ra", "--strict-markers", "-m", "not gpu and not e2e"]
+markers = [
+    "unit: pure logic, fakes only at I/O boundaries",
+    "integration: real Win32 APIs, filesystem and Qt; no GPU",
+    "gpu: real faster-whisper and model downloads",
+    "e2e: the full app as a subprocess or in-process",
+]
+qt_api = "pyside6"
+filterwarnings = [
+    # sounddevice 0.5 reshapes its input buffer in place; deprecated by numpy 2.5.
+    "ignore:Setting the shape on a NumPy array:DeprecationWarning:sounddevice",
+]

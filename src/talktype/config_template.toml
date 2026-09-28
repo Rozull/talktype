@@ -1,0 +1,114 @@
+# Configuração do talktype
+#
+# Este arquivo fica em %APPDATA%\talktype\config.toml e foi criado com os valores padrão.
+# Edite à vontade e use "Recarregar config" no ícone da bandeja para aplicar sem reiniciar.
+# Se um valor for inválido, o talktype mantém o último valor válido daquela chave e avisa
+# qual chave foi rejeitada e por quê. Chaves desconhecidas (erros de digitação) geram aviso.
+
+[trigger]
+# Tecla de ditado: "right_ctrl", "right_alt", "right_shift", "caps_lock", "scroll_lock",
+# "pause" ou "f13" até "f24".
+key = "right_ctrl"
+# Tempo segurando a tecla até o sinal de "pode falar", em milissegundos (500 a 5000).
+hold_threshold_ms = 1000
+# Um toque mais curto que isto conta como toque normal na tecla, em ms (50 a 500).
+tap_threshold_ms = 200
+# Intervalo máximo entre dois toques para ativar o modo mãos livres, em ms (150 a 1000).
+double_tap_window_ms = 400
+# Quanto antes do sinal o microfone é aberto, em ms (0 a 1000).
+mic_preopen_ms = 300
+
+[recording]
+# Duração máxima de um ditado, em segundos (1 a 1800). Valores acima de 1800 viram 1800.
+max_seconds = 300
+# Menos fala que isto, em segundos, conta como "nada detectado" (0.1 a 2.0).
+min_speech_seconds = 0.3
+# Tocar os sons de início e fim do ditado (true ou false).
+sounds = true
+# Arquivo WAV para o som de início. Vazio usa o som embutido.
+start_sound = ""
+# Arquivo WAV para o som de fim. Vazio usa o som embutido.
+end_sound = ""
+# Nome do microfone a usar. Vazio usa o dispositivo padrão do Windows.
+microphone = ""
+
+[overlay]
+# Texto parcial ao vivo durante o ditado: "auto" (só com GPU), "on" ou "off".
+preview = "auto"
+# Intervalo entre atualizações do texto parcial, em ms (300 a 2000).
+preview_interval_ms = 700
+# Quantos segundos finais do áudio entram no texto parcial (5 a 30).
+preview_window_seconds = 15
+
+[injection]
+# Como o texto entra no aplicativo: "paste" (cola e restaura o clipboard) ou "type" (digita).
+mode = "paste"
+# Tempo máximo esperando o aplicativo confirmar a colagem, em ms (100 a 3000).
+paste_confirm_timeout_ms = 500
+# Espera antes de restaurar o clipboard anterior, em ms (0 a 2000).
+restore_delay_ms = 150
+# Caracteres enviados por vez no modo "type" (1 a 128).
+type_chunk_chars = 16
+
+[asr]
+# Modelo de reconhecimento: "large-v3-turbo", "large-v3", "medium", "small" ou "parakeet-v3".
+# O "parakeet-v3" roda só na CPU e ignora o vocabulário.
+model = "large-v3-turbo"
+# Onde o modelo roda: "auto" (GPU se houver memória livre), "cuda" ou "cpu".
+device = "auto"
+# Idioma falado, como código do Whisper ("pt" para português).
+language = "pt"
+# Termos que o reconhecimento deve preferir, por exemplo ["GitHub", "pull request", "CI"].
+vocabulary = []
+
+[cleanup]
+# Liga a limpeza do texto transcrito (true ou false).
+enabled = true
+# Remove hesitações como "hum" e "ahn" (true ou false).
+remove_hesitations = true
+# Junta espaços repetidos e corrige espaços antes de pontuação (true ou false).
+normalize_whitespace = true
+# Põe ponto final quando a transcrição termina sem pontuação (true ou false).
+final_period = true
+# Palavras de hesitação removidas quando aparecem sozinhas.
+hesitations = ["hum", "hmm", "humm", "ahn", "ãh", "hã", "éé", "eh", "uh", "um"]
+# Trocas de texto aplicadas depois da transcrição, por exemplo:
+# substitutions = [{ from = "pê erre", to = "PR" }]
+substitutions = []
+
+[commands]
+# Liga os comandos falados (true ou false).
+enabled = true
+# Frases faladas trocadas por texto. "\n" é quebra de linha e nunca envia a mensagem.
+items = [
+    { phrase = "nova linha", text = "\n" },
+    { phrase = "novo parágrafo", text = "\n\n" },
+]
+
+[llm]
+# Revisão do texto por IA local (true ou false). Usa mais memória de GPU; desligada por padrão.
+enabled = false
+# Servidor local: "ollama" ou "openai_compatible".
+provider = "ollama"
+# Endereço do servidor. Precisa ser local (127.0.0.1, localhost ou ::1).
+endpoint = "http://127.0.0.1:11434"
+# Modelo usado na revisão.
+model = "qwen2.5:7b-instruct"
+# Tempo máximo da revisão, em segundos (1 a 30). Se passar, o texto entra sem revisão.
+timeout_s = 5.0
+# Quanto tempo o Ollama mantém o modelo carregado depois do uso.
+keep_alive = "30m"
+# Chave de acesso para servidores "openai_compatible". Vazio não envia chave.
+api_key = ""
+# Instrução enviada à IA. Vazio usa a instrução padrão, que corrige sem mudar o sentido.
+instruction = ""
+
+[history]
+# Quantos ditados recentes ficam no histórico (1 a 200).
+size = 20
+# Atalho para inserir de novo o último ditado, por exemplo "ctrl+alt+shift+v".
+repaste_hotkey = "ctrl+alt+shift+v"
+
+[debug]
+# Grava o texto ditado no log (true ou false). Deixe desligado: o log guarda só o tamanho.
+log_text = false

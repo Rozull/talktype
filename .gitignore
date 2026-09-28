@@ -1,0 +1,28 @@
+.venv/
+__pycache__/
+*.py[cod]
+*.log
+.pytest_cache/
+.ruff_cache/
+
+# Python tooling
+*.egg-info/
+build/
+dist/
+.pyright/
+.coverage
+htmlcov/
+
+# Per-machine talktype data (lives in %APPDATA%\talktype, never in the repo)
+/config.toml
+/history.json
+/state.json
+history.corrupt-*.json
+config.backup-*.toml
+logs/
+*.tmp
+
+# Model caches
+models/
+.cache/
+.hf-cache/

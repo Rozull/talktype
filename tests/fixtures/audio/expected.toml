@@ -1,0 +1,44 @@
+# Gerado por scripts/gen_fixtures.ps1. Não edite à mão; rode o script de novo.
+# Voz: Microsoft Maria Desktop. Formato: WAV PCM 16 kHz, mono, 16 bits.
+
+[deploy_pr]
+file = "deploy_pr.wav"
+text = "Então, antes de fazer o deploy, abre um pull request no GitHub com as mudanças da pipeline, espera o CI passar em todos os testes e, se estiver tudo verde, faz o merge na main e avisa o time no canal."
+key_terms = ["deploy", "pull request", "github", "pipeline", "ci"]
+speech = true
+duration_s = 15.62
+
+[curta_sim]
+file = "curta_sim.wav"
+text = "Sim."
+key_terms = ["sim"]
+speech = true
+duration_s = 1.42
+
+[nova_linha]
+file = "nova_linha.wav"
+text = "Primeiro item da lista nova linha segundo item da lista"
+key_terms = ["primeiro item", "nova linha", "segundo item"]
+speech = true
+duration_s = 5.13
+
+[hesitacao]
+file = "hesitacao.wav"
+text = "Hum, eu acho que, ahn, a gente pode revisar isso amanhã, hum, depois da reunião."
+key_terms = ["revisar", "amanhã", "reunião"]
+speech = true
+duration_s = 9.19
+
+[silencio_3s]
+file = "silencio_3s.wav"
+text = ""
+key_terms = []
+speech = false
+duration_s = 3.0
+
+[ruido_3s]
+file = "ruido_3s.wav"
+text = ""
+key_terms = []
+speech = false
+duration_s = 3.0
